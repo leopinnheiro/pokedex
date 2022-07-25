@@ -5,6 +5,8 @@ const pokemonForm = document.getElementById('pokemon__form');
 const pokemonInputSearch = document.querySelector('#pokemon__form .input__search');
 const pokemonPrevButton = document.getElementById('btn-prev');
 const pokemonNextButton = document.getElementById('btn-next');
+const audioPlayer = new Audio();
+audioPlayer.volume = 1;
 
 let currentId = 1;
 
@@ -24,8 +26,10 @@ const renderPokemon = async (pokemon) => {
 
   if (pokemon.toString().toLowerCase() === 'missingno') {
     await renderMissingNo();
-    return
+    pokemonInputSearch.value = '';
+    return;
   }
+  stopAudio();
 
   const data = await fetchPokemon(pokemon);
 
@@ -45,9 +49,14 @@ const renderPokemon = async (pokemon) => {
 };
 
 const renderMissingNo = async () => {
+  audioPlayer.src = "./assets/sounds/missigno.mp3";
+  audioPlayer.loop = true;
+  audioPlayer.play();
+  await sleep(500);
+
   pokemonNumber.innerHTML = `??? - `;
   pokemonName.innerHTML = 'MissingNo.';
-  await loadPokemonImage('./images/missingno.gif');
+  await loadPokemonImage('./assets/images/missingno.gif');
 };
 
 const loadPokemonImage = path => {
@@ -79,5 +88,12 @@ pokemonPrevButton.addEventListener('click', () => {
     renderPokemon(currentId);
   }
 });
+
+const stopAudio = () => {
+  audioPlayer.src = "";
+  audioPlayer.loop = false;
+}
+
+const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 renderPokemon(currentId);
