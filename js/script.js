@@ -47,7 +47,7 @@ const renderPokemon = async (pokemon) => {
 const renderMissingNo = async () => {
   pokemonNumber.innerHTML = `??? - `;
   pokemonName.innerHTML = 'MissingNo.';
-  await loadPokemonImage('../images/missingno.gif');
+  await loadPokemonImage('./images/missingno.gif');
 };
 
 const loadPokemonImage = path => {
